@@ -83,11 +83,11 @@ con <- file(paste0(getwd(), "/", substr(bargs$rmdfile, 1, nchar(bargs$rmdfile)-4
 sink(con, append=T)
 sink(con, append=T, type="message")
 rmd_check <- tryCatch(rmarkdown::render(bargs$rmdfile, 
-                                        output_file=html_file,
                                         params=list(out=full_outloc,
                                                     dir=getwd())),
-                      warning=function(w) print(sprintf("all warnings:\n", paste(w, collapse=",\n"))),
-                      error = function(e) print(sprintf("Rmd file could not be run %s", e)))
+                      warning=function(w) print(sprintf("All Warnings:\n %s", paste(w, collapse=",\n"))),
+                      error = function(e) print(sprintf("Rmd file could not be run: %s", e)))
+file.rename(tmp, html_file)
 sink(type="message")
 sink()
 close(con)
