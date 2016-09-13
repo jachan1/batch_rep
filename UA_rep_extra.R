@@ -86,7 +86,8 @@ rmd_check <- tryCatch(rmarkdown::render(bargs$rmdfile,
                                         output_file=html_file,
                                         params=list(out=full_outloc,
                                                     dir=getwd())),
-                      error = function(e) print("Rmd file could not be run"))
+                      warning=function(w) print(sprintf("all warnings:\n", paste(w, collapse=",\n"))),
+                      error = function(e) print(sprintf("Rmd file could not be run %s", e)))
 sink(type="message")
 sink()
 close(con)
