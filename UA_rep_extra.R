@@ -85,9 +85,13 @@ sink(con, append=T, type="message")
 rmd_check <- tryCatch(rmarkdown::render(bargs$rmdfile, 
                                         params=list(out=full_outloc,
                                                     dir=getwd())),
-                      warning=function(w) print(sprintf("All Warnings:\n %s", paste(w, collapse=",\n"))),
-                      error = function(e) print(sprintf("Rmd file could not be run: %s", e)))
-file.rename(tmp, html_file)
+                      error = function(e) e)
+if("error" %in% class(rmd_check)){
+  printf(sprintf("Render produced an error: %s", rmd_check))
+} else {
+  file.rename(rmd_check, html_file)
+}
+
 sink(type="message")
 sink()
 close(con)
