@@ -87,7 +87,7 @@ rmd_check <- tryCatch(rmarkdown::render(bargs$rmdfile,
                                                     dir=getwd())),
                       error = function(e) e)
 if("error" %in% class(rmd_check)){
-  printf(sprintf("Render produced an error: %s", rmd_check))
+  print(sprintf("Render produced an error: %s", rmd_check))
 } else {
   file.rename(rmd_check, html_file)
 }
