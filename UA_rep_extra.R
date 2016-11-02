@@ -92,8 +92,9 @@ if("error" %in% class(rmd_check)){
   file.rename(rmd_check, html_file)
 }
                         
-writeLines("\n\n______________Full Rmd Code Run___________\n\n")
-tryCatch(writeLines(readLines(bargs$rmdfile)), error=function(e) writeLines(sprintf("Error: Could not print code\n\n%s", e)))
+cat("\n\n______________Full Rmd Code Run___________\n\n")
+tryCatch(writeLines(readLines(bargs$rmdfile)), 
+         error=function(e) sprintf("Error: Could not print code\n\n%s", e))
 sink(type="message")
 sink()
 close(con)
