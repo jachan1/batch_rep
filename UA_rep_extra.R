@@ -91,7 +91,8 @@ if("error" %in% class(rmd_check)){
 } else {
   file.rename(rmd_check, html_file)
 }
-
+writeLines("______________Full Rmd Code Run___________\n\n")
+writeLines(readLines(bargs$rmdfile))
 sink(type="message")
 sink()
 close(con)
