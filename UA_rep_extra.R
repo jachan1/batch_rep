@@ -99,7 +99,7 @@ sink(type="message")
 sink()
 close(con)
 if(rmd_check != "Rmd file could not be run"){
-  tryCatch(system(sprintf("\"%s\" -O %s -s Letter -L 10 -R 10 -T 15 -B 20 --zoom 1.3 \"%s\" --header-center \" \" --footer-center [page]/[topage] \"%s\"", 
+  tryCatch(system(sprintf("\"%s\" -O %s -s Letter -L 10 -R 10 -T 15 -B 20 --zoom 1.3 \"%s\" --header-center \" \" --footer-left [page]/[topage] --footer-font-size 8 \"%s\"", 
                           bargs$wkloc, ortn, html_file, pdf_file)),
            error = function(e) print("PDF file could not be created"))
 }
