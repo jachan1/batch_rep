@@ -95,8 +95,8 @@ if("error" %in% class(rmd_check)){
 cat("\n\n______________Full Rmd Code Run___________\n\n")
 tryCatch(writeLines(readLines(bargs$rmdfile)), 
          error=function(e) sprintf("Error: Could not print code\n\n%s", e))
-sink(type="message")
 cat(sessionInfo())
+sink(type="message")
 sink()
 close(con)
 if(rmd_check != "Rmd file could not be run"){
