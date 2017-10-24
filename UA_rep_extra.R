@@ -55,7 +55,9 @@ getArgs <- function(verbose=FALSE, defaults=NULL) {
 ### code ------
 
 
-bargs <- getArgs(defaults=list(portrait=T, rmdfile="report.Rmd", outloc="/../docs", prefix="report_", wkloc="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"))
+bargs <- getArgs(defaults=list(portrait=T, rmdfile="report.Rmd", outloc="/../docs", prefix="report_", 
+                               wkloc="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe",
+                               archive=0))
 
 if(bargs$portrait) {
   ortn = "portrait"
@@ -68,7 +70,7 @@ html_file <- file.path(full_outloc, paste0(bargs$prefix, today, ".html"))
 pdf_file <- file.path(full_outloc, paste0(bargs$prefix, today, ".pdf"))
 
 old_files <- grep(sprintf("^%s", bargs$prefix), list.files(full_outloc, pattern=".html|.pdf"), ignore.case = T, value=T)
-if(length(old_files) > 0){
+if(length(old_files) > 0 & archive==1){
   old_folder <- paste0(full_outloc, "/", bargs$prefix, "previous_versions")
   if(!old_folder %in% list.dirs(full_outloc)){
     dir.create(old_folder)
