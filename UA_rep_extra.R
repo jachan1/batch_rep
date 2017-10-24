@@ -57,7 +57,7 @@ getArgs <- function(verbose=FALSE, defaults=NULL) {
 
 bargs <- getArgs(defaults=list(portrait=T, rmdfile="report.Rmd", outloc="/../docs", prefix="report_", 
                                wkloc="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe",
-                               archive=0))
+                               archive=1))
 
 if(bargs$portrait) {
   ortn = "portrait"
