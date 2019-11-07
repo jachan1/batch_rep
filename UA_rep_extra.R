@@ -54,6 +54,8 @@ getArgs <- function(verbose=FALSE, defaults=NULL) {
 
 ### code ------
 
+if(!"rmarkdown" %in% rownames(installed.packages())) install.packages("rmarkdown")
+if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
 
 bargs <- getArgs(defaults=list(portrait=T, rmdfile="report.Rmd", outloc="/../docs", prefix="report_", 
                                wkloc="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe",
