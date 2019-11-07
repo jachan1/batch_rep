@@ -54,6 +54,11 @@ getArgs <- function(verbose=FALSE, defaults=NULL) {
 
 ### code ------
 
+local({r <- getOption("repos")
+       r["CRAN"] <- "https://cloud.r-project.org" 
+       options(repos=r)
+})
+
 if(!"rmarkdown" %in% rownames(installed.packages())) install.packages("rmarkdown")
 if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
 
