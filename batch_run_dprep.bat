@@ -8,7 +8,7 @@
 
 pushd "%~dp0"pushd "%~dp0"
 set "pandoc_loc=C:/Program Files/RStudio/bin/pandoc"
-set "batch_loc=H:/BG/R/git_temps/batch_rep/batch_run_dprep.R"
+set "batch_loc=https://raw.githubusercontent.com/jachan1/batch_rep/master/batch_run_dprep.R"
 Rscript -e "Sys.setenv(RSTUDIO_PANDOC='%pandoc_loc%');source('%batch_loc%')" ^
 	--args ^
 	rfile=alsss_dataprep.R ^
