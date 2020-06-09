@@ -58,12 +58,22 @@ options(repos=structure(c(CRAN="https://cloud.r-project.org")))
 
 if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
 if(!"dplyr" %in% rownames(installed.packages())) install.packages("dplyr")
+require(dplyr)
 
 bargs <- getArgs(defaults=list(rfile="report.R", outloc="/", prefix="cr", 
                                archive=1, verbose_objects=0))
 
 
 full_outloc <- paste0(getwd(), "/", bargs$outloc)
+
+
+# bargs$rfile <- "p_dataprep_dataprep.R"
+# bargs$prefix <-  "cr"
+# full_outloc <- "Z:/ATN/AIR-P STUDIES/RFA 09 Studies/PETRA Expansion/Analyses/dataprep/code/"
+# setwd(full_outloc)
+# bargs$archive <- 1
+# bargs$verbos_objects <- 0
+
 
 today <- format(Sys.Date(), "%Y%m%d")
 
@@ -102,7 +112,7 @@ if("error" %in% class(src_check)){
   print(sprintf("Source produced an error: %s", src_check))
 
 }
-require(dplyr)
+
 object_details_df <-data.frame(object= ls(), stringsAsFactors = F) %>% 
   group_by(object) %>% 
   mutate(size_KB = format(object.size(get(object)), units="KB"),
@@ -114,13 +124,16 @@ object_details_df <-data.frame(object= ls(), stringsAsFactors = F) %>%
 write_fwf = function(dt, width, 
                      justify = "l", replace_na = "NA") {
   fct_col = which(sapply(dt, is.factor))
+  dt_chr <- dt %>% ungroup()
   if (length(fct_col) > 0) {
     for (i in fct_col) {
-      dt[,i] <- as.character(dt[,i])
+      dt_chr[,i] <- as.character(dt_chr[,i])
     }
   }
-  dt[is.na(dt)] = replace_na
-  n_col = ncol(dt)
+  dt_chr <- dt_chr %>% 
+    mutate_all(as.character)
+  dt_chr[is.na(dt_chr)] = replace_na
+  n_col = ncol(dt_chr)
   justify = unlist(strsplit(justify, ""))
   justify = as.character(factor(justify, c("l", "r"), c("-", "")))
   if (n_col != 1) {
@@ -130,8 +143,8 @@ write_fwf = function(dt, width,
   sptf_fmt = paste0(
     paste0("%", justify, width, "s"), collapse = ""
   )
-  tbl_content = do.call(sprintf, c(fmt = sptf_fmt, dt))
-  tbl_header = do.call(sprintf, c(list(sptf_fmt), names(dt)))
+  tbl_content = do.call(sprintf, c(fmt = sptf_fmt, dt_chr))
+  tbl_header = do.call(sprintf, c(list(sptf_fmt), names(dt_chr)))
   out = c(tbl_header, tbl_content)
   writeLines(out)
 }
