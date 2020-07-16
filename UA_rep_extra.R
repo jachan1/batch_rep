@@ -23,7 +23,10 @@
 ##' @param defaults a named list of defaults, optional
 ##' @return a named list
 ##' @author Chris Wallace
+
 getArgs <- function(verbose=FALSE, defaults=NULL) {
+  
+  
   myargs <- gsub("^--","",commandArgs(TRUE))
   setopts <- !grepl("=",myargs)
   if(any(setopts))
@@ -86,7 +89,6 @@ if(length(old_files) > 0 & bargs$archive==1){
   })
 }
 
-make_pdf = T
 con <- file(paste0(getwd(), "/", substr(bargs$rmdfile, 1, nchar(bargs$rmdfile)-4), ".txt"), open="wt")
 sink(con, append=T)
 sink(con, append=T, type="message")
@@ -113,10 +115,10 @@ if(rmd_check != "Rmd file could not be run"){
   sys_str <- glue("\"{bargs$wkloc}\" -O {ortn} -s Letter -L 10 -R 10 -T 15 -B 20 --zoom 1.3 \"{html_file}\" 
                   --header-center \" header\" 
                   --footer-left [page]/[topage] 
-                  --footer-right \" footer\"
+                  --footer-right \" footer\" 
                   --footer-font-size 10 
                   --disable-javascript \"{pdf_file}\"")
-  tryCatch(system(sys_str),
+  tryCatch(system(gsub("\n", " ", sys_str)),
            error = function(e) print("PDF file could not be created"))
 }
 
