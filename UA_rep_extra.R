@@ -58,6 +58,8 @@ options(repos=structure(c(CRAN="https://cloud.r-project.org")))
 
 if(!"rmarkdown" %in% rownames(installed.packages())) install.packages("rmarkdown")
 if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
+if(!"glue" %in% rownames(installed.packages())) install.packages("glue")
+require(glue)
 
 bargs <- getArgs(defaults=list(portrait=T, rmdfile="report.Rmd", outloc="/../docs", prefix="report_", 
                                wkloc="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe",
@@ -108,8 +110,13 @@ sink(type="message")
 sink()
 close(con)
 if(rmd_check != "Rmd file could not be run"){
-  tryCatch(system(sprintf("\"%s\" -O %s -s Letter -L 10 -R 10 -T 15 -B 20 --zoom 1.3 \"%s\" --header-center \" \" --footer-left [page]/[topage] --footer-font-size 10 --disable-javascript \"%s\"", 
-                          bargs$wkloc, ortn, html_file, pdf_file)),
+  sys_str <- glue("\"{bargs$wkloc}\" -O {ortn} -s Letter -L 10 -R 10 -T 15 -B 20 --zoom 1.3 \"{html_file}\" 
+                  --header-center \" header\" 
+                  --footer-left [page]/[topage] 
+                  --footer-right \" footer\"
+                  --footer-font-size 10 
+                  --disable-javascript \"{pdf_file}\"")
+  tryCatch(system(sys_str),
            error = function(e) print("PDF file could not be created"))
 }
 
