@@ -75,6 +75,7 @@ if(bargs$portrait) {
 full_outloc <- paste0(getwd(), "/", bargs$outloc)
 
 today <- format(Sys.Date(), "%Y%m%d")
+today_time <- paste(format(Sys.Date(), "%Y-%m-%d"), format(Sys.time(),"%H:%M"))
 html_file <- file.path(full_outloc, paste0(bargs$prefix, today, ".html"))
 pdf_file <- file.path(full_outloc, paste0(bargs$prefix, today, ".pdf"))
 
@@ -112,11 +113,13 @@ sink(type="message")
 sink()
 close(con)
 if(rmd_check != "Rmd file could not be run"){
-  sys_str <- glue("\"{bargs$wkloc}\" -O {ortn} -s Letter -L 10 -R 10 -T 15 -B 20 --zoom 1.3 \"{html_file}\" 
-                  --header-center \" header\" 
-                  --footer-left [page]/[topage] 
-                  --footer-right \" footer\" 
-                  --footer-font-size 10 
+  sys_str <- glue("\"{bargs$wkloc}\" -O {ortn} 
+                  -s Letter -L 10 -R 10 -T 15 -B 12 --zoom 1.3 \"{html_file}\" 
+                  --header-center \" \" 
+                  --footer-right [page]/[topage] 
+                  --footer-left \"Report Generated on {today_time}\" 
+                  --footer-font-size 9
+                  --footer-spacing 4
                   --disable-javascript \"{pdf_file}\"")
   tryCatch(system(gsub("\n", " ", sys_str)),
            error = function(e) print("PDF file could not be created"))
